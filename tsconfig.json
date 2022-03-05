@@ -6,9 +6,15 @@
     "target": "ES2017",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "types": ["vite/client"],
-    "jsx": "react",
+    "jsx": "preserve",
+    "jsxImportSource": "preact",
+    "jsxFactory": "preact.h",
+    "jsxFragmentFactory": "preact.Fragment",
     "skipLibCheck": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   },
   "ts-node": {
     "transpileOnly": true,
