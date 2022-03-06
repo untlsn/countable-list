@@ -20,6 +20,7 @@ const Switch = (props: SwitchProps) => {
     <div class="flex items-center gap-4 cursor-pointer select-none">
       {props.children}
       <button
+        type='button'
         class="h-4 w-10 bg-gray-100 rounded-full relative group focus-within:outline-none hover:children:bg-opacity-7 focus:children:bg-opacity-7"
         tabIndex={props.tabIndex || -1}
         onClick={() => setChecked(v => !v)}

@@ -1,16 +1,21 @@
 import './style.css';
 import { JSX } from 'preact';
 import Show from '~/providers/Show';
+import { forwardRef } from 'preact/compat';
 
-export interface TextFieldProps {
+export interface TextFieldProps extends JSX.HTMLAttributes<HTMLInputElement> {
   class?: string;
   placeholder?: string;
   error?: string;
-
-  spread?: JSX.HTMLAttributes<HTMLInputElement>
 }
 
-const TextField = (props: TextFieldProps) => {
+const getForInput = (props: TextFieldProps) => {
+  const { class: _class, placeholder, error, ...forInput } = props;
+  return forInput;
+};
+
+const TextField = forwardRef((props: TextFieldProps, ref) => {
+  props.ref = ref as any;
   return (
     <div class={props.class}>
       <label
@@ -18,7 +23,7 @@ const TextField = (props: TextFieldProps) => {
         tabIndex={-1}
       >
         <input
-          {...props.spread || {}}
+          {...getForInput(props)}
           placeholder=" "
           class="w-full rounded h-10 bg-transparent focus:outline-none input-placeholder-move"
         />
@@ -32,6 +37,6 @@ const TextField = (props: TextFieldProps) => {
       {<Show when={props.error}>{<small class="block text-red-600 pl-4">{props.error}</small>}</Show>}
     </div>
   );
-};
+});
 
 export default TextField;

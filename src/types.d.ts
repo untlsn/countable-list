@@ -5,3 +5,5 @@ declare module React {
     class?: string;
   }
 }
+
+declare module '.css';

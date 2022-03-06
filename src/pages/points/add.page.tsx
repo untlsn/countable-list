@@ -35,8 +35,8 @@ const Add = observer(() => {
 
   return (
     <div class="bg-gray-200 min-h-page py-8">
-      <div class="bg-white w-180 m-auto p-4 rounded-xl shadow space-y-4">
-        <TextField placeholder="Point name" spread={{ ...register('name'), tabIndex: 1 }} />
+      <form onSubmit={submit as any} class="bg-white w-180 m-auto p-4 rounded-xl shadow space-y-4">
+        <TextField placeholder="Point name" tabIndex={1} {...register('name')} />
         <Switch
           onCheck={(checked) => setValue('countable', checked)}
           checked={!!watch('countable')}
@@ -47,11 +47,10 @@ const Add = observer(() => {
         <div class={watch('countable') ? '' : 'opacity-50'}>
           <TextField
             placeholder="Count"
-            spread={{
-              ...register('maxCount', { valueAsNumber: true }),
-              disabled: !watch('countable'),
-              tabIndex: 3,
-            }}
+            type="number"
+            disabled={!watch('countable')}
+            tabIndex={3}
+            {...register('maxCount', { valueAsNumber: true })}
           />
         </div>
         <label class="flex items-center">
@@ -63,11 +62,11 @@ const Add = observer(() => {
           />
         </label>
         <div class="text-right">
-          <Button onClick={submit as any} tabIndex={4}>
+          <Button tabIndex={4}>
             Submit
           </Button>
         </div>
-      </div>
+      </form>
     </div>
   );
 });
