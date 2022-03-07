@@ -1,6 +1,6 @@
 const classes = {
   dragging: 'dragging',
-  draggable: 'draggable'
+  draggable: 'draggable',
 };
 
 export default classes;
