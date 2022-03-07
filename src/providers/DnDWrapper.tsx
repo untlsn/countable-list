@@ -36,15 +36,15 @@ const DnDWrapper = observer((props: DnDWrapperProps) => {
         const id = dragging.getAttribute('data-id')!;
         const afterId = getDragAfterId(ev.currentTarget as HTMLElement, ev.clientY);
 
-        const ids = [...store.pointsOrder];
+        const ids = [...store.currentOrder];
         ids.splice(ids.indexOf(id), 1);
         if (afterId) ids.splice(ids.indexOf(afterId), 0, id);
         else ids.push(id);
 
-        store.pointsOrder = ids;
+        store.currentOrder = ids;
       }}
     >
-      {[...new Set(store.pointsOrder)].map(props.render)}
+      {[...new Set(store.currentOrder)].map(props.render)}
     </div>
   );
 });

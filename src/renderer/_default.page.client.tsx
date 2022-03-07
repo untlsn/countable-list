@@ -4,7 +4,6 @@ import 'virtual:windi.css';
 import 'virtual:windi-devtools';
 import '~/assets/style/global.css';
 import PageWrapper from '~/providers/PageWrapper';
-import store from '~/store';
 
 const { hydrationPromise } = useClientRouter({
   render(pageContext) {
@@ -22,7 +21,6 @@ const { hydrationPromise } = useClientRouter({
 
 hydrationPromise.then(() => {
   console.log('Hydration finished; page is now interactive.');
-  store.setPoints(JSON.parse(localStorage.getItem('points') || '{}'));
 });
 
 function getPageTitle(pageContext: any) {

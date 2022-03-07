@@ -13,27 +13,38 @@ const createSavePoint = (partialPoint: ToDoPointReq): ToDoPoint => ({
 
 class Store {
   points: Record<string, ToDoPoint> = {};
-  pointsOrder = [] as string[];
+  pointsOrders = { default: [] } as Record<string, string[]>;
   trashInUse = false;
+  #catalogs = new Set<string>(['default']);
+  openCatalog = 'default';
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  set newPoint(value: ToDoPointReq) {
-    const point = createSavePoint(value);
-    this.points[point.id] = point;
-    this.pointsOrder.push(point.id);
+  get catalogs() {
+    return [...this.#catalogs];
   }
 
-  setPoints(points: Record<string, ToDoPoint>) {
-    this.points = points;
-    this.pointsOrder = Object.keys(points);
+  get currentOrder() {
+    return this.pointsOrders[this.openCatalog];
+  }
+  set currentOrder(order) {
+    this.pointsOrders[this.openCatalog] = order;
+  }
+
+  set newPoint(value: ToDoPointReq) {
+    const point = createSavePoint(value);
+    this.#catalogs.add(point.catalog);
+    this.points[point.id] = point;
+    this.pointsOrders[point.catalog] ||= [];
+    this.pointsOrders[point.catalog].push(point.id);
   }
 
   removePoint(id: string) {
+    const order = this.pointsOrders[this.points[id].catalog];
+    order.splice(order.indexOf(id), 1);
     delete this.points[id];
-    this.pointsOrder.splice(this.pointsOrder.indexOf(id), 1);
   }
 }
 

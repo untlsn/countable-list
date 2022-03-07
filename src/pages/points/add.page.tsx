@@ -12,14 +12,17 @@ interface AddPointFormFields {
   countable: boolean
   maxCount?: number
   color: string
+  catalog?: string
 }
 
 const Add = observer(() => {
-  const { register, handleSubmit, watch, setValue } = useForm<AddPointFormFields>();
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<AddPointFormFields>();
+
 
   const submit = handleSubmit(({ countable, ...spread }) => {
     store.newPoint = {
       ...spread,
+      catalog: spread.catalog || 'default',
       maxCount: countable ? spread.maxCount! : 1,
     };
     navigate('/');
@@ -32,7 +35,12 @@ const Add = observer(() => {
   return (
     <div class="bg-gray-200 min-h-page py-8">
       <form onSubmit={submit as any} class="bg-white w-180 m-auto p-4 rounded-xl shadow space-y-4">
-        <TextField placeholder="Point name" tabIndex={1} {...register('name')} />
+        <TextField
+          placeholder="Point name"
+          tabIndex={1}
+          {...register('name', { required: 'Point name are required' })}
+          error={errors.name?.message}
+        />
         <Switch
           onCheck={(checked) => setValue('countable', checked)}
           checked={!!watch('countable')}
@@ -49,6 +57,12 @@ const Add = observer(() => {
             {...register('maxCount', { valueAsNumber: true })}
           />
         </div>
+        <TextField
+          placeholder="Catalog"
+          tabIndex={4}
+          defaultValue="default"
+          {...register('catalog')}
+        />
         <label class="flex items-center">
           <button>Pick color</button>
           <input

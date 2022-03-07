@@ -4,13 +4,12 @@ import Show from '~/providers/Show';
 import { forwardRef } from 'preact/compat';
 
 export interface TextFieldProps extends JSX.HTMLAttributes<HTMLInputElement> {
-  class?: string;
-  placeholder?: string;
   error?: string;
+  defaultValue?: string
 }
 
 const getForInput = (props: TextFieldProps) => {
-  const { class: _class, placeholder, error, ...forInput } = props;
+  const { class: _class, placeholder, error, defaultValue, ...forInput } = props;
   return forInput;
 };
 
@@ -24,12 +23,12 @@ const TextField = forwardRef((props: TextFieldProps, ref) => {
       >
         <input
           {...getForInput(props)}
-          placeholder=" "
+          placeholder={props.defaultValue || ' '}
           class="w-full rounded h-10 bg-transparent focus:outline-none input-placeholder-move"
         />
         <div
-          class="absolute text-gray-500 transform transition-transform
-          before before:(absolute bg-white w-[110%] h-[3px] -left-[5%] top-0 bottom-0 mx-0 my-auto -z-1)"
+          class={`absolute text-gray-500 transform transition-transform ${props.defaultValue ? 'transform -translate-y-[86%] scale-90' : ''}
+          before before:(absolute bg-white w-[110%] h-[3px] -left-[5%] top-0 bottom-0 mx-0 my-auto -z-1)`}
         >
           {props.placeholder}
         </div>
