@@ -1,15 +1,5 @@
 import { autorun, makeAutoObservable, configure } from 'mobx';
-import { ToDoPoint, ToDoPointReq } from '~/store/types';
-import uuid from '~/helpers/uuid';
-
-const createSavePoint = (partialPoint: ToDoPointReq): ToDoPoint => ({
-  id: uuid(),
-  color: '#fff',
-  catalog: 'default',
-  maxCount: 1,
-  curCount: 0,
-  ...partialPoint,
-});
+import ToDoPoint, { ToDoPointRoot } from '~/store/ToDoPoint';
 
 class Store {
   points: Record<string, ToDoPoint> = {};
@@ -33,8 +23,8 @@ class Store {
     this.pointsOrders[this.openCatalog] = order;
   }
 
-  set newPoint(value: ToDoPointReq) {
-    const point = createSavePoint(value);
+  set newPoint(value: ToDoPointRoot) {
+    const point = new ToDoPoint(value);
     this.#catalogs.add(point.catalog);
     this.points[point.id] = point;
     this.pointsOrders[point.catalog] ||= [];

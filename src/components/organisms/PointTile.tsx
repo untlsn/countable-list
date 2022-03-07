@@ -16,8 +16,6 @@ interface PointTileProps {
 
 const PointTile = observer(({ id }: PointTileProps) => {
   const point = store.points[id];
-  const changeCount = (num: number) => point.curCount += num;
-  const isMulti = point.maxCount != 1;
 
   return (
     <article
@@ -25,26 +23,19 @@ const PointTile = observer(({ id }: PointTileProps) => {
       style={{ 'border-color': point.color }}
       data-id={point.id}
       draggable
-      onContextMenu={ev => {
-        ev.preventDefault();
-
-      }}
-      onDragStart={ev => {
-        ev.currentTarget.classList.add(classes.dragging);
-      }}
-      onDragEnd={ev => {
-        ev.currentTarget.classList.remove(classes.dragging);
-      }}
+      onContextMenu={ev => ev.preventDefault()}
+      onDragStart={ev => ev.currentTarget.classList.add(classes.dragging)}
+      onDragEnd={ev => ev.currentTarget.classList.remove(classes.dragging)}
     >
       <button
-        class={`absolute top-2 right-2 text-2xl text-gray-400 ${store.trashInUse ? '' : 'hidden'}`}
+        class={`absolute top-2 right-2 text-2xl text-gray-400 ${store.trashInUse || point.isFilled ? '' : 'hidden'}`}
         onClick={() => store.removePoint(point.id)}
       >
         <TiDelete />
       </button>
       <div class="flex items-center gap-2">
         <CheckCircle
-          onClick={() => store.points[point.id].curCount = point.maxCount == point.curCount ? 0 : point.maxCount}
+          onClick={() => point.setFill()}
           checked={point.maxCount == point.curCount}
         />
         <p class={point.curCount == point.maxCount ? 'line-through' : ''}>{point.name}</p>
@@ -52,15 +43,15 @@ const PointTile = observer(({ id }: PointTileProps) => {
           <DifferenceBar {...point}/>
         </Show>
       </div>
-      <Show when={isMulti}>
+      <Show when={point.isMulti}>
         <div class="flex justify-end gap-2">
           <button
-            onClick={() => point.curCount > 0 && changeCount(-1)}
+            onClick={() => point.changeCount(-1)}
           >
             <AiFillMinusCircle className="text-2xl text-main-orange" />
           </button>
           <button
-            onClick={() => point.curCount < point.maxCount && changeCount(1)}
+            onClick={() => point.changeCount(1)}
           >
             <AiFillPlusCircle className="text-2xl text-main-orange" />
           </button>
