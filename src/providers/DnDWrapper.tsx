@@ -44,7 +44,7 @@ const DnDWrapper = observer((props: DnDWrapperProps) => {
         store.pointsOrder = ids;
       }}
     >
-      {store.pointsOrder.map(props.render)}
+      {[...new Set(store.pointsOrder)].map(props.render)}
     </div>
   );
 });

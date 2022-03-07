@@ -4,7 +4,7 @@ import store from '~/store';
 import { observer } from 'mobx-react-lite';
 import '~/assets/style/dnd.css';
 import classes from '~/data/dndClasses';
-import { ImCross } from 'react-icons/im';
+import { TiDelete } from 'react-icons/ti';
 import { AiFillPlusCircle, AiFillMinusCircle } from 'react-icons/ai';
 import DifferenceBar from '~/components/atoms/DifferenceBar';
 
@@ -25,6 +25,10 @@ const PointTile = observer(({ id }: PointTileProps) => {
       style={{ 'border-color': point.color }}
       data-id={point.id}
       draggable
+      onContextMenu={ev => {
+        ev.preventDefault();
+
+      }}
       onDragStart={ev => {
         ev.currentTarget.classList.add(classes.dragging);
       }}
@@ -33,10 +37,10 @@ const PointTile = observer(({ id }: PointTileProps) => {
       }}
     >
       <button
-        class={`absolute top-2 right-2 ${store.trashInUse ? '' : 'hidden'}`}
+        class={`absolute top-2 right-2 text-2xl text-gray-400 ${store.trashInUse ? '' : 'hidden'}`}
         onClick={() => store.removePoint(point.id)}
       >
-        <ImCross />
+        <TiDelete />
       </button>
       <div class="flex items-center gap-2">
         <CheckCircle
