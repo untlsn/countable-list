@@ -2,7 +2,6 @@ import TextField from '~/components/atoms/TextField';
 import Switch from '~/components/atoms/Switch';
 import Button from '~/components/atoms/Button';
 import { useForm } from 'react-hook-form';
-import uuid from '~/helpers/uuid';
 import store from '~/store';
 import { navigate } from 'vite-plugin-ssr/client/router';
 import { useEffect } from 'preact/hooks';
@@ -19,12 +18,9 @@ const Add = observer(() => {
   const { register, handleSubmit, watch, setValue } = useForm<AddPointFormFields>();
 
   const submit = handleSubmit(({ countable, ...spread }) => {
-    const id = uuid();
     store.newPoint = {
-      id,
       ...spread,
       maxCount: countable ? spread.maxCount! : 1,
-      curCount: 0,
     };
     navigate('/');
   });
