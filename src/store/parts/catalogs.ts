@@ -15,7 +15,7 @@ Map.prototype.edit = function (name, update) {
 };
 
 export default class Catalogs {
-  all = new Map<string, string[]>([['default', []]]);
+  all = new Map([['default', new Set<string>()]]);
   open = 'default';
 
 
@@ -23,8 +23,19 @@ export default class Catalogs {
     return [...this.all.keys()];
   }
 
+  get currentOrder() {
+    return this.orderOf(this.open);
+  }
+  set currentOrder(ids: string[]) {
+    this.setOrder(this.open, ids);
+  }
+
   orderOf(name: string) {
-    return this.all.get(name);
+    return [...this.all.get(name)];
+  }
+
+  setOrder(name: string, ids: string[]) {
+    this.all.set(name, new Set(ids));
   }
 
   isOpen(catalog: string) {
@@ -38,11 +49,24 @@ export default class Catalogs {
     }
   }
 
-  push(name: string, id: string) {
+  push(name: string, id) {
+    id = String(id);
     if (this.all.has(name)) {
-      this.all.edit(name, old => [...old, id]);
+      this.all.get(name).add(id);
     } else {
-      this.all.set(name, [id]);
+      this.all.set(name, new Set([id]));
     }
+  }
+
+  removeId(id: any, name?: string) {
+    id = String(id);
+    if (name) {
+      this.all.get(name).delete(id);
+    } else {
+      this.all.forEach(set => {
+        set.delete(id);
+      });
+    }
+
   }
 };

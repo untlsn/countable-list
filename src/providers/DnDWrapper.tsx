@@ -1,6 +1,6 @@
 import classes from '~/data/dndClasses';
 import { observer } from 'mobx-react-lite';
-import store from '~/store';
+import { useStore } from '~/store/hooks';
 
 const getDragAfterId = (container: HTMLElement, y: number) => {
   const rest = container.querySelectorAll(`.${classes.draggable}:not(.${classes.dragging})`);
@@ -26,6 +26,8 @@ interface DnDWrapperProps {
 }
 
 const DnDWrapper = observer((props: DnDWrapperProps) => {
+  const { catalogs } = useStore();
+
   return (
     <div
       className="space-y-4 p-4"
@@ -36,15 +38,15 @@ const DnDWrapper = observer((props: DnDWrapperProps) => {
         const id = dragging.getAttribute('data-id')!;
         const afterId = getDragAfterId(ev.currentTarget as HTMLElement, ev.clientY);
 
-        const ids = [...store.currentOrder];
+        const ids = [...catalogs.currentOrder];
         ids.splice(ids.indexOf(id), 1);
         if (afterId) ids.splice(ids.indexOf(afterId), 0, id);
         else ids.push(id);
 
-        store.currentOrder = ids;
+        catalogs.currentOrder = ids;
       }}
     >
-      {[...new Set(store.currentOrder)].map(props.render)}
+      {[...new Set(catalogs.currentOrder)].map(props.render)}
     </div>
   );
 });

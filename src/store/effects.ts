@@ -10,11 +10,13 @@ const runEffects = (store: Store) => {
   );
   reaction(
     () => store.points.length,
-    (__, id) => {
-      store.catalogs.push(
-        store.points.all[id].catalog,
-        String(id),
-      );
+    (newVal, oldVal) => {
+      if (newVal > oldVal) {
+        store.catalogs.push(
+          store.points.get(oldVal).catalog,
+          oldVal,
+        );
+      }
     },
   );
 };

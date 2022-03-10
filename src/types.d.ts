@@ -28,9 +28,9 @@ declare global {
   interface ObjectConstructor {
     entries<T extends string|number|symbol, R>(obj: Record<T, R>): [key: T, val: R][]
   }
-  interface Map<T, R> {
-    changeKey(oldName: T, newName: T, careful?: boolean): this
-    edit(key: T, update: (val: R) => R): this
+  interface Map<K, V> {
+    changeKey(oldName: K, newName: K, careful?: boolean): this
+    edit(key: K, update: (val: V) => V): this
   }
 }
 
