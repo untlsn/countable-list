@@ -12,6 +12,7 @@ export default class Points {
 
   addPoint(props: { name: string, maxCount: number, color: string, catalog: string }) {
     const id = String(this.length++);
+    console.log(id);
     this.all[id] = new SinglePoint(id, props.name, props.maxCount, props.color, props.catalog);
   }
 };

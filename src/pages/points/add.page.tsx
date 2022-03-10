@@ -22,8 +22,9 @@ const Add = observer(() => {
 
   const submit = handleSubmit(({ countable, ...spread }) => {
     store.points.addPoint({
-      ...spread,
       ...store.settings.defaults,
+      ...spread,
+      catalog: spread.catalog ? spread.catalog : store.settings.defaults.catalog,
       maxCount: countable ? spread.maxCount! : 1,
     });
     navigate('/');

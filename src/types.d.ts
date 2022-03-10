@@ -29,7 +29,7 @@ declare global {
     entries<T extends string|number|symbol, R>(obj: Record<T, R>): [key: T, val: R][]
   }
   interface Map<T, R> {
-    changeKey(oldName: T, newName: T): this
+    changeKey(oldName: T, newName: T, careful?: boolean): this
     edit(key: T, update: (val: R) => R): this
   }
 }

@@ -1,4 +1,10 @@
-Map.prototype.changeKey = function (oldKey, newKey) {
+Map.prototype.changeKey = function (oldKey, newKey, careful = false) {
+  if (careful && this.has(newKey)) {
+    const fromNew = this.get(newKey);
+    this.set(newKey, this.get(oldKey));
+    this.set(oldKey, fromNew);
+    return this;
+  }
   this.set(newKey, this.get(oldKey));
   this.delete(oldKey);
   return this;
@@ -26,7 +32,7 @@ export default class Catalogs {
   }
 
   changeName(oldName: string, newName: string) {
-    this.all.changeKey(oldName, newName);
+    this.all.changeKey(oldName, newName, true);
     if (this.open == oldName) {
       this.open = newName;
     }
