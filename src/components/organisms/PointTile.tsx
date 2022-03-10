@@ -19,7 +19,7 @@ const PointTile = observer(({ id }: PointTileProps) => {
 
   return (
     <article
-      class="bg-white border-l-4 h-20 w-100 p-4 rounded draggable cursor-move relative"
+      className="bg-white border-l-4 h-20 w-100 p-4 rounded draggable cursor-move relative"
       style={{ 'border-color': point.color }}
       data-id={point.id}
       draggable
@@ -28,23 +28,23 @@ const PointTile = observer(({ id }: PointTileProps) => {
       onDragEnd={ev => ev.currentTarget.classList.remove(classes.dragging)}
     >
       <button
-        class={`absolute top-2 right-2 text-2xl text-gray-400 ${store.trashInUse || point.isFilled ? '' : 'hidden'}`}
+        className={`absolute top-2 right-2 text-2xl text-gray-400 ${store.trashInUse || point.isFilled ? '' : 'hidden'}`}
         onClick={() => store.removePoint(point.id)}
       >
         <TiDelete />
       </button>
-      <div class="flex items-center gap-2">
+      <div className="flex items-center gap-2">
         <CheckCircle
           onClick={() => point.setFill()}
           checked={point.maxCount == point.curCount}
         />
-        <p class={point.curCount == point.maxCount ? 'line-through' : ''}>{point.name}</p>
+        <p className={point.curCount == point.maxCount ? 'line-through' : ''}>{point.name}</p>
         <Show when={point.maxCount > 1}>
           <DifferenceBar {...point}/>
         </Show>
       </div>
       <Show when={point.isMulti}>
-        <div class="flex justify-end gap-2">
+        <div className="flex justify-end gap-2">
           <button
             onClick={() => point.changeCount(-1)}
           >

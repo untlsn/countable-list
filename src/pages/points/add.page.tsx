@@ -2,29 +2,30 @@ import TextField from '~/components/atoms/TextField';
 import Switch from '~/components/atoms/Switch';
 import Button from '~/components/atoms/Button';
 import { useForm } from 'react-hook-form';
-import store from '~/store';
 import { navigate } from 'vite-plugin-ssr/client/router';
 import { useEffect } from 'preact/hooks';
 import { observer } from 'mobx-react-lite';
+import { useStore } from '~/store/hooks';
 
 interface AddPointFormFields {
   name: string
   countable: boolean
   maxCount?: number
-  color: string
+  color?: string
   catalog?: string
 }
 
 const Add = observer(() => {
+  const store = useStore();
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<AddPointFormFields>();
 
 
   const submit = handleSubmit(({ countable, ...spread }) => {
-    store.newPoint = {
+    store.points.addPoint({
       ...spread,
-      catalog: spread.catalog || 'default',
+      ...store.settings.defaults,
       maxCount: countable ? spread.maxCount! : 1,
-    };
+    });
     navigate('/');
   });
 
@@ -33,8 +34,8 @@ const Add = observer(() => {
   }, [watch('countable')]);
 
   return (
-    <div class="bg-gray-200 min-h-page py-8">
-      <form onSubmit={submit as any} class="bg-white w-180 m-auto p-4 rounded-xl shadow space-y-4">
+    <div className="min-h-page py-8">
+      <form onSubmit={submit as any} className="bg-white w-180 m-auto p-4 rounded-xl shadow space-y-4">
         <TextField
           placeholder="Point name"
           tabIndex={1}
@@ -48,7 +49,7 @@ const Add = observer(() => {
         >
           countable
         </Switch>
-        <div class={watch('countable') ? '' : 'opacity-50'}>
+        <div className={watch('countable') ? '' : 'opacity-50'}>
           <TextField
             placeholder="Count"
             type="number"
@@ -60,18 +61,18 @@ const Add = observer(() => {
         <TextField
           placeholder="Catalog"
           tabIndex={4}
-          defaultValue="default"
+          defaulty={store.settings.defaults.catalog}
           {...register('catalog')}
         />
-        <label class="flex items-center">
+        <label className="flex items-center">
           <button>Pick color</button>
           <input
             type="color"
-            value="#ffffff"
+            value={store.settings.defaults.color}
             onChange={(ev) => setValue('color', ev.currentTarget.value)}
           />
         </label>
-        <div class="text-right">
+        <div className="text-right">
           <Button tabIndex={4}>
             Submit
           </Button>

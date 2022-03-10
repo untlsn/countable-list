@@ -4,11 +4,11 @@ import { observer } from 'mobx-react-lite';
 
 const CatalogHeader = observer(() => {
   return (
-    <div class="fixed top-header left-0 w-screen h-catalogs p-4 text-xl bg-main-purple text-white flex items-center gap-2">
-      {store.catalogs.map(catalog => (
+    <div className="fixed top-header left-0 w-screen h-catalogs p-4 text-xl bg-main-purple text-white flex items-center gap-2">
+      {store.catalogs.keys.map(catalog => (
         <button
-          onClick={() => store.openCatalog = catalog}
-          class={`${catalog == store.openCatalog ? 'underline' : ''}`}
+          onClick={() => store.catalogs.open = catalog}
+          className={`${store.catalogs.isOpen(catalog) ? 'underline' : ''}`}
         >
           {catalog}
         </button>

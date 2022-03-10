@@ -4,9 +4,13 @@ import 'virtual:windi.css';
 import 'virtual:windi-devtools';
 import '~/assets/style/global.css';
 import PageWrapper from '~/providers/PageWrapper';
+import store from '~/store';
 
 const { hydrationPromise } = useClientRouter({
   render(pageContext) {
+    // @ts-ignore testing
+    window.store = store;
+
     const page = <PageWrapper {...pageContext} />;
     const container = document.querySelector('body');
 

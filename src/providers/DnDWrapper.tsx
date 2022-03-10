@@ -28,7 +28,7 @@ interface DnDWrapperProps {
 const DnDWrapper = observer((props: DnDWrapperProps) => {
   return (
     <div
-      class="space-y-4 p-4"
+      className="space-y-4 p-4"
       onDragEnter={ev => {
         const dragging = ev.currentTarget.querySelector(`.${classes.dragging}`);
         if (!dragging) return;
